@@ -184,3 +184,208 @@ Logo, nosso repositório está sincronizado e na barra de endereços temos a URL
 Podemos compartilhar esse link com outras pessoas e elas podem acessar o repositório, inclusive você, Gabi. Eu posso te enviar este repositório e fica aí essa pergunta: será que você conseguirá baixar o projeto no seu computador?
 
 Gabrielle: O GitHub nos proporciona essa possibilidade de outras pessoas não apenas acessarem nosso código, mas também contribuírem para ele. Vamos explorar isso em seguida.
+
+---------------------------------------------------
+
+O comando git push deve ser executado para sincronizar as mudanças do repositório local com o repositório remoto, ou seja, quando desejamos enviar os novos commits que realizamos em nosso repositório local para o repositório remoto. No entanto, para garantir uma conexão segura, é essencial configurar uma chave SSH no computador antes de executar esse comando.
+
+Chave SSH
+Ao vincular um repositório remoto ao nosso repositório local, via comando git remote add, precisamos utilizar algum protocolo seguro, como HTTPS ou SSH. No caso de se utilizar o protocolo SSH, escolha realizada neste curso, devemos gerar uma chave SSH em nosso computador, além de cadastrá-la em nossa conta do GitHub. Isso é necessário para garantir a autenticação, pois o GitHub checa se quem está realizando o push dos commits tem permissão para realizar tal ação.
+
+Geração de uma chave SSH
+Antes de executar o comando git push, precisamos gerar uma chave SSH. A geração da chave é feita via terminal, com o comando ssh-keygen -t ed25519 -C "SEU EMAIL AQUI":
+
+Terminal do VSCode com o comando ssh-keygen -t ed25519 -C "fulano@email.com.br" sendo executado.
+
+Repare, na imagem anterior, que ao executar o comando para gerar uma chave SSH, uma pergunta foi feita e o terminal fica travado esperando nossa resposta:
+
+Generating public/private ed25519 key pair.
+Enter file in which to save the key (/home/rodrigo/.ssh/id_ed25519):
+Copiar código
+Essa primeira pergunta é para indicarmos o diretório em nosso computador no qual a chave será salva, sendo que entre parênteses é indicado o diretório padrão. O recomendado é apenas apertar a tecla enter no teclado para que a chave seja salva no diretório padrão, pois assim o Git consegue encontrar essa chave automaticamente sempre que executarmos o comando git push.
+
+Após apertar a tecla enter, uma nova pergunta será apresentada no terminal:
+
+Enter passphrase (enter for no passphrase):
+Copiar código
+Essa segunda pergunta é para indicarmos se desejamos adicionar uma senha à chave SSH que será gerada. Caso você digite uma senha, toda vez que executar o comando git push será necessário digitar tal senha. Ao não digitar nada e apenas apertar a tecla enter, a chave será gerada sem a proteção de uma senha.
+
+Por fim, a terceira e última pergunta é apenas para confirmar a senha anterior:
+
+Enter same passphrase again:
+Copiar código
+A chave será gerada e a seguinte mensagem será exibida no terminal:
+
+Your identification has been saved in /home/rodrigo/.ssh/id_ed25519
+Your public key has been saved in /home/rodrigo/.ssh/id_ed25519.pub
+The key fingerprint is:
+SHA256:jxAkhGR7NHm/0fcmyPnErZxSKr+ObsH7r4AC/vUNvPY fulano@email.com.br
+The key's randomart image is:
++--[ED25519 256]--+
+| .oo=..          |
+| ..o.+.          |
+|  . .... .       |
+|   .   .o . .    |
+|  .   ..S+ = o   |
+| . .   ++o+ = +  |
+|  . . o =o.* =   |
+|   . o .=*o =    |
+|    .  +=*E=.    |
++----[SHA256]-----+
+Copiar código
+Na primeira linha da mensagem você consegue identificar o diretório no seu computador no qual a chave foi salva. Agora, basta acessar tal diretório para ter acesso à chave SSH.
+
+Observação: Nesse diretório serão gerados dois arquivos que representam a chave SSH, sendo um para a chave privada (arquivo id_ed25519) e o outro para a chave pública (id_ed25519.pub).
+
+Cadastrando a chave SSH no GitHub
+Após gerar a chave, precisamos cadastrá-la em nossa conta do GitHub, para que assim o GitHub consiga nos identificar e autenticar ao executar o comando git push de nosso computador.
+
+Acesse a página de chaves SSH de sua conta no GitHub e clique no botão New SSH key ou Nova chave SSH para realizar o cadastro da chave:
+
+Formulário para cadastro de chave SSH no site do GitHub, contendo os campos "title", "key type" e "key".
+
+Repare que o formulário exibido na imagem anterior contém três campos:
+
+Title ou Título: Informe um apelido para sua chave SSH (por exemplo: computador casa)
+Key type ou Tipo de chave: Escolha o tipo Authentication Key ou Chave de autenticação
+Key ou Chave: Nesse campo você deve colar o conteúdo do arquivo da sua chave SSH pública (arquivo id_ed25519.pub)
+Após realizar esse procedimento, será possível sincronizar o repositório local com o remoto, enviando os novos commits com o comando git push.
+
+----------------------------------------------------
+
+Vimos no vídeo anterior que para fazer o link entre o repositório local, que está em nosso computador, com o repositório remoto, que está no GitHub, devemos utilizar o comando git remote.
+
+Esse comando tem algumas variações e parâmetros opcionais que podem ser úteis em certas situações. Confira a seguir exemplos de uso desse comando:
+
+1 - Adicionar um repositório remoto:
+
+Quando você deseja estabelecer uma conexão entre seu repositório local e um repositório remoto, como aquele hospedado no GitHub, o comando git remote add é a ferramenta essencial. Essa etapa é crucial para possibilitar a colaboração e o compartilhamento de código com outras pessoas, bem como para fazer backup de seu trabalho em um servidor remoto.
+
+A sintaxe básica do comando é a seguinte:
+
+git remote add apelido url
+Copiar código
+'apelido': Este é um nome que você atribui ao repositório remoto. Geralmente, se utiliza nomes descritivos, como "origin" para o repositório principal no GitHub, mas você pode escolher nomes que façam sentido para o seu projeto.
+
+'url': Aqui, você insere a URL do repositório remoto. Esta URL é única para cada repositório remoto e serve como o endereço para acessar e interagir com ele pela internet. Certifique-se de copiar a URL correta do repositório que deseja adicionar.
+
+2 - Listar os repositórios remotos:
+
+Para listar os repositórios remotos associados ao seu projeto local, você pode utilizar o comando git remote -v. Isso exibirá uma lista de todos os repositórios remotos vinculados ao seu projeto, juntamente com suas URLs. Veja um exemplo:
+
+git remote -v
+Copiar código
+A saída será algo semelhante a:
+
+origin   https://github.com/seu-usuario/seu-projeto.git (fetch)
+origin   https://github.com/seu-usuario/seu-projeto.git (push)
+Copiar código
+Essa lista é útil para verificar se os repositórios remotos estão configurados corretamente. Obs: Vai aparecer duplicado mesmo, pois o Git separa a url de envio de commits (push) da url de baixar commits (fetch).
+
+3 - Remover um repositório remoto:
+
+Caso você não precise mais de um repositório remoto específico, pode removê-lo com o comando git remote remove apelido. Substitua 'apelido' pelo nome do repositório remoto que deseja remover. Aqui está um exemplo:
+
+git remote remove origin
+Copiar código
+Após a execução deste comando, o repositório remoto chamado "origin" será desvinculado do seu projeto local.
+
+4 - Alterar a URL de um repositório remoto:
+
+Às vezes, é necessário atualizar a URL de um repositório remoto, como quando a URL do servidor do GitHub é modificada ou quando você copiou a URL incorreta ao adicionar o repositório remoto. Use o comando git remote set-url apelido nova_url para realizar essa atualização. Substitua 'apelido' pelo nome do repositório remoto e 'nova_url' pela nova URL que você deseja associar a ele. Aqui está um exemplo:
+
+git remote set-url origin https://github.com/seu-usuario/seu-repositorio.git
+Copiar código
+Isso atualizará a URL do repositório remoto "origin" para a nova URL especificada.
+
+5 - Alterar o apelido de um repositório remoto:
+
+Se você deseja renomear um repositório remoto, use o comando git remote rename apelido novo_apelido. Substitua 'apelido' pelo nome atual do repositório remoto e 'novo_apelido' pelo novo nome que você deseja atribuir a ele. Aqui está um exemplo:
+
+git remote rename origin novo-origin
+Copiar código
+Isso renomeará o repositório remoto de "origin" para "novo-origin".
+
+Lembre-se de que o comando git remote é fundamental para a gestão de conexões entre seu repositório local e repositórios remotos, permitindo a colaboração eficiente e o controle de versão. Praticar esses comandos em seu ambiente de desenvolvimento ajudará a consolidar seu entendimento.
+
+______________________________________
+Nesse curso, aprendemos como realizar a autenticação no Github em seu computador pessoal através de uma chave SSH. Entretanto, essa não é a única forma de se autenticar no Github.
+
+Caso você tente conectar seu repositório local com o repositório remoto através da conexão HTTP, será pedido uma senha no momento de realizar o seu login. Porém, desde 2021, por motivos de segurança, o Github não aceita mais que essa autenticação seja feita por meio de sua senha.
+
+Caso você tente usar sua senha, acontecerá um erro como o mostrado a seguir:
+
+Logon failed, use ctrl+c to cancel basic credential prompt.
+remote: Support for password authentication was removed on August 13, 2021. Please use a personal access token instead.
+remote: Please see https://github.blog/2020-12-15-token-authentication-requirements-for-git-operations/ for more information.
+fatal: unable to access ‘<repositório Git>’: The request URL returned error: 403 
+Copiar código
+Assim, a outra opção de autenticação para usar o Github em seu terminal é através de um token para o git.
+
+O artigo Nova exigência do Git de autenticação por token, o que é e o que devo fazer? te ensinará a realizar as configurações necessárias para criar e utilizar esse token.
+________________________________________________________________
+O Git é uma ferramenta excelente para acompanhar a mudança entre versões de um mesmo projeto e, dentre vários benefícios, nos ajuda a observar de perto o desenvolvimento do seu aprendizado. Tudo isso de uma forma organizada através dos commits.
+
+Além disso, algo que é essencial no universo da tecnologia é apresentar o seu progresso para a comunidade e montar um portfólio dos seus projetos para demonstrar suas habilidades. Dessa forma, o GitHub é essencial para compartilhar e colaborar em projetos de programação de todo o mundo.
+
+Pensando nisso, criamos uma lista de atividades (não obrigatórias) focada em prática para melhorar ainda mais sua experiência de aprendizagem. Bora praticar então?
+
+Desafios
+Crie uma conta no GitHub
+Crie um repositório para um projeto pessoal.
+Faça a instalação do Git
+Crie um repositório localmente para o seu projeto pessoal
+Adicione alguns arquivos no seu repositório local
+Faça o commit das alterações
+Configure a identidade do autor do commit.
+Crie a branch Main
+Realize a conexão do seu repositório local com o remoto
+Envie as alterações no repositório local para o remoto
+Utilize o comando git status
+Caso precise de ajuda, opções de solução das atividades estarão disponíveis na seção “Opinião da pessoa instrutora”.
+_______________________________________
+Opinião do instrutor
+
+Crie uma conta no GitHub Você pode começar seguindo os passos mostrados no vídeo, preenchendo o formulário de cadastro, verificando sua conta e explorando a página inicial do GitHub.
+
+Criar um novo repositório no GitHub e fazer o upload de um projeto local para esse repositório. Você pode seguir passos mencionados na aula, como acessar as configurações do GitHub, criar um novo repositório com um nome único e escolher se ele será público ou privado. Em seguida, você pode adicionar uma descrição, um README, um .gitignore e uma licença ao repositório.
+
+Instalação do Git: Caso você ainda não tenha realizado a instalação, siga os passos na atividade Faça como eu fiz: instalação do Git
+
+Para criar um repositório local você, digite o seguinte comando no terminal: git init
+
+Para adicionar os arquivos no repositório local, digite no terminal o comando: git add .
+
+Faça um commit com as modificações, digite no terminal o comando: git commit -m "mensagem de commit"
+
+Para configurar a identidade do autor do commit, digite no terminal o comando:
+
+git -config --global user.email "seuemailaqui@example.com"
+git config --global user.name "seu nome aqui"
+Copiar código
+Para criar a branch Main, digite no terminal o comando: git branch -M main
+
+O comando git branch -m é usado para criar uma nova ramificação no repositório Git atual. Neste caso, criamos a branch padrão main, que representa a versão principal do código.
+
+Para realizar a conexão do seu repositório local com o remoto via SSH, digite no terminal: git remote add origin git@github.com:seunomedeusuario/seu-repositorio.git
+
+Caso seja necessário, realize a configuração do protocolo SSH através da geração de chave, você pode acompanhar os passos em vídeo na atividade Sincronizando repositórios
+
+Para subir as alterações no repositório local para o remoto, digite o seguinte comando no terminal: git push -u origin main
+
+Digite no terminal o comando git status e observe a saída.
+
+O comando git status é uma ferramenta essencial para gerenciar alterações no controle de versão Git. Ele fornece uma visão geral do estado atual do repositório, indicando quais arquivos foram modificados, adicionados ou excluídos desde o último commit. Essa informação é crucial para compreender o progresso do desenvolvimento e tomar decisões de gerenciamento de alterações.
+
+A saída do comando git status geralmente contém três seções principais:
+
+Modificados: Lista os arquivos que foram modificados desde o último commit, mas ainda não foram adicionados à área de preparação (Stage).
+
+Adicionados: Indica os arquivos que foram adicionados à área de preparação, mas ainda não foram confirmados no histórico de commits.
+
+Modificados, adicionados ou excluídos: Exibe os arquivos que não foram rastreados pelo Git, ou seja, que não foram adicionados ao índice de modificações (Staging Area).
+
+Além disso, o comando git status pode fornecer informações adicionais sobre as ramificações atuais, como a ramificação atual e as ramificações que estão à frente ou atrás da atual.
+
+O comando git status é uma ferramenta indispensável para qualquer desenvolvedor que utiliza Git. Ele permite monitorar as alterações no repositório, identificar o estado dos arquivos e tomar decisões de gerenciamento de commits de forma eficiente.
+
